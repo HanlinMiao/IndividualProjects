@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/hanlinmiao/CLionProjects/Text Game/Master.h
+
+/Users/hanlinmiao/CLionProjects/Text Game/Monster.h
+
+/Users/hanlinmiao/CLionProjects/Text Game/Servant.h
+string
+-
+
+/Users/hanlinmiao/CLionProjects/Text Game/game.cpp
+iostream
+-
+string.h
+-
+game.h
+/Users/hanlinmiao/CLionProjects/Text Game/game.h
+random
+-
+time.h
+-
+stdlib.h
+-
+stdio.h
+-
+
+/Users/hanlinmiao/CLionProjects/Text Game/game.h
+Master.h
+/Users/hanlinmiao/CLionProjects/Text Game/Master.h
+Servant.h
+/Users/hanlinmiao/CLionProjects/Text Game/Servant.h
+Monster.h
+/Users/hanlinmiao/CLionProjects/Text Game/Monster.h
+
