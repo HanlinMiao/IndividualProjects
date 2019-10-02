@@ -1,0 +1,154 @@
+#include <iostream>
+#include <cstdlib>
+#include <chrono>
+#include <cmath>
+using namespace std;
+using namespace std::chrono;
+bool checkRow (int arr[9][9], int rowNum, int colNum){
+
+        for (int j =0; j <colNum; j++){
+            if(colNum==j){
+                continue;
+            }
+            
+           else if (arr[rowNum][colNum] == arr[rowNum][j] ){
+
+                return false;
+       
+            }
+
+        }return true;
+
+}
+bool checkColumn(int arr[9][9], int rowNum, int colNum){
+    for(int i = 0; i <rowNum; i++){
+      if(rowNum==i){
+          continue;
+      }else if(arr[rowNum][colNum] == arr[i][colNum]){
+            return false;
+      }
+    }return true;
+
+}
+bool check3x3(int arr[9][9], int rowNum, int colNum){
+  for(int i = (rowNum/3)*3; i<(rowNum/3)*3+3;i++ ){
+    for(int j = (colNum/3)*3; j<(colNum/3)*3+3; j++){
+        if(rowNum == i && colNum == j){
+          continue;
+        }else if(arr[i][j]==arr[rowNum][colNum]){
+          return false;
+        }
+    }
+  }return true;
+}
+
+void filler ()
+{
+
+  srand (time(0));
+
+  for (int i = 0; i <rand()%rand(); i++)
+    {
+      int num2 = pow(rand(), rand());
+
+    }
+
+}
+
+
+
+
+int RNG (){
+
+    auto start = high_resolution_clock::now();
+
+    filler();
+
+    auto end = high_resolution_clock::now();
+
+    auto duration = duration_cast<microseconds>(end - start);
+
+    srand (duration.count());
+    
+    return (rand()%9+1);
+
+}
+
+
+
+void sudokuGenerator (){
+    int arr[9][9];
+    int counter = 100;
+    for (int i =0; i < 9; i++){
+        for(int j = 0; j<9; j++){
+            arr[i][j]=0;
+        }
+    }
+    int count = 0;
+    for (int i =0; i < 9; i++){
+         for(int j = 0; j<9; j++){
+           arr[i][j] =RNG();
+           if(count<=counter){
+              if(checkRow(arr, i, j)&&checkColumn(arr, i, j)&&check3x3(arr, i, j)){
+                count = 0;
+                continue;
+              }else{
+                count++;
+                j--;
+              }
+           }else{
+             cout<<" "<<endl;
+             for(int x = 0; x<9; x++){
+              for(int y = 0; y<9;y++){
+                 cout << arr[x][y] << " ";
+              }cout<<" "<<endl;
+            }
+            cout<<" "<<endl;
+            for(int y = 0; y<=j;y++){
+                  arr[i][y] = 0;
+            }
+            for(int x = 0; x<9; x++){
+              for(int y = 0; y<9;y++){
+                 cout << arr[x][y] << " ";
+              }cout<<" "<<endl;
+            }
+             i--;
+             j=-1;
+             count =0;
+           }
+         }
+
+}
+
+cout << " " << endl;
+
+    for (int i =0; i < 9; i++){
+        for(int j = 0; j<9; j++){
+            cout << arr[i][j] << " ";
+        }cout<<" "<<endl;
+
+    }
+
+}
+
+
+
+int main ()
+
+{
+
+auto start = high_resolution_clock::now();
+
+sudokuGenerator ();
+
+auto end = high_resolution_clock::now();
+
+cout<< " "<<endl;
+
+auto duration = duration_cast<seconds>(end - start);
+
+cout<< duration.count() << endl;
+
+return 0;
+
+}
