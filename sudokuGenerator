@@ -76,8 +76,7 @@ int RNG (){
 
 
 
-void sudokuGenerator (){
-    int arr[9][9];
+void sudokuGenerator (int arr[9][9]){
     int counter = 100;
     for (int i =0; i < 9; i++){
         for(int j = 0; j<9; j++){
@@ -97,21 +96,12 @@ void sudokuGenerator (){
                 j--;
               }
            }else{
-             cout<<" "<<endl;
-             for(int x = 0; x<9; x++){
-              for(int y = 0; y<9;y++){
-                 cout << arr[x][y] << " ";
-              }cout<<" "<<endl;
-            }
+             
             cout<<" "<<endl;
             for(int y = 0; y<9;y++){
                   arr[i][y] = 0;
             }
-            for(int x = 0; x<9; x++){
-              for(int y = 0; y<9;y++){
-                 cout << arr[x][y] << " ";
-              }cout<<" "<<endl;
-            }
+            
              i--;
              j=-1;
              count =0;
@@ -131,6 +121,57 @@ cout << " " << endl;
 
 }
 
+void blockNumbers(int arr[9][9]){
+  cout<< "Type in which level of difficulty do you want"<<endl;
+  cout<< "Easy" << endl;
+  cout<< "Medium" << endl;
+  cout<< "Hard" <<endl;
+
+  string difficulty;
+  int num = 0;
+  char d;
+  if(difficulty == "Easy"){
+    d = 'E';
+  }else if(difficulty == "Medium"){
+    d= 'M';
+  }else{
+    d= 'H';
+  }
+
+  
+  cin>> difficulty;
+
+  switch(d){
+    case 'E': 
+    num = 1;
+    break;
+
+    case 'M': 
+    num = 3;
+    break;
+
+    case 'H': 
+    num = 5;
+    break;
+  }
+
+  for(int i = 0; i< 9; i++){
+    for (int j =0; j<num; j++){
+      int rand = RNG()-1;
+      while(arr[i][rand]==0){
+        rand = RNG()-1;
+      }
+        arr[i][rand] = 0;
+    }
+  }
+  for(int i = 0; i< 9; i++){
+    for (int j =0; j< 9; j++){
+      cout << arr[i][j] <<" ";
+    }cout<< " " << endl;
+  }
+}
+
+
 
 
 int main ()
@@ -139,7 +180,10 @@ int main ()
 
 auto start = high_resolution_clock::now();
 
-sudokuGenerator ();
+int arr[9][9];
+
+sudokuGenerator (arr);
+blockNumbers(arr);
 
 auto end = high_resolution_clock::now();
 
