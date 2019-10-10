@@ -128,6 +128,7 @@ void blockNumbers(int arr[9][9]){
   cout<< "Hard" <<endl;
 
   string difficulty;
+  cin>> difficulty;
   int num = 0;
   char d;
   if(difficulty == "Easy"){
@@ -139,7 +140,7 @@ void blockNumbers(int arr[9][9]){
   }
 
   
-  cin>> difficulty;
+ 
 
   switch(d){
     case 'E': 
