@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <chrono>
 #include <cmath>
+#include <limits>
 using namespace std;
 using namespace std::chrono;
 bool checkRow (int arr[9][9], int rowNum, int colNum){
@@ -96,8 +97,6 @@ void sudokuGenerator (int arr[9][9]){
                 j--;
               }
            }else{
-             
-            cout<<" "<<endl;
             for(int y = 0; y<9;y++){
                   arr[i][y] = 0;
             }
@@ -171,7 +170,75 @@ void blockNumbers(int arr[9][9]){
     }cout<< " " << endl;
   }
 }
+bool checkFilled(int arr[9][9]){
+  for(int i = 0; i< 9; i++){
+        for (int j =0; j< 9; j++){
+          if(arr[i][j]==0){
+            return false;
+          }
+        }
+  }return true;
+}
 
+void sudokuSolver(int arr[9][9]){
+  cout<< "Which empty space would you like to fill in first?"<< endl;
+  int x;
+  int y;
+  cin>> x;
+  cin>> y;
+  while(1){
+    if(!checkFilled(arr)){
+    while(1){
+      if(cin.fail()){
+        cout<< "Please enter a NUMBER" << endl;
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(),'\n');
+        cin>> x;
+        cin>> y;
+      }else if((x<1 || x>9)||(y>9 || y<1)){
+        cout<< "Please enter two numbers within the range of 1 to 9"<< endl;
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(),'\n');
+        cin>> x;
+        cin>> y;
+      }else{
+        break;
+      }
+    } 
+    cout<< "Enter a number to fill in" << endl;
+    int fill;
+    cin>> fill;
+    while(1){
+      if(cin.fail()){
+        cout<< "Please enter a NUMBER" << endl;
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(),'\n');
+        cin>> fill;
+  
+      }else if(fill<1 || fill>9){
+        cout<< "Please enter a number within the range of 1 to 9"<< endl;
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(),'\n');
+        cin>> fill;
+     
+      }else{
+        break;
+      }
+    } for(int i = 0; i< 9; i++){
+        for (int j =0; j< 9; j++){
+        if(i == x-1 && j == y-1){
+          arr[i][j] = fill;
+        } cout << arr[i][j] <<" ";
+      } cout<< " " << endl;
+    }cout<< "Which empty space would you like to fill in next?"<< endl;
+    cin>> x;
+    cin>> y;
+    }else{
+      cout<< "Congratulations!"<< endl;
+      break;
+    }
+  }
+}
 
 
 
@@ -185,6 +252,7 @@ int arr[9][9];
 
 sudokuGenerator (arr);
 blockNumbers(arr);
+sudokuSolver(arr);
 
 auto end = high_resolution_clock::now();
 
