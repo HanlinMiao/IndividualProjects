@@ -1,3 +1,4 @@
+  
 #include <iostream>
 #include <cstdlib>
 #include <chrono>
@@ -186,8 +187,7 @@ void sudokuSolver(int arr[9][9]){
   int y;
   cin>> x;
   cin>> y;
-  while(1){
-    if(!checkFilled(arr)){
+  while(!checkFilled(arr)){
     while(1){
       if(cin.fail()){
         cout<< "Please enter a NUMBER" << endl;
@@ -230,14 +230,20 @@ void sudokuSolver(int arr[9][9]){
           arr[i][j] = fill;
         } cout << arr[i][j] <<" ";
       } cout<< " " << endl;
-    }cout<< "Which empty space would you like to fill in next?"<< endl;
-    cin>> x;
-    cin>> y;
+    }if(!checkFilled(arr)){
+      cout<< "Which empty space would you like to fill in next?"<< endl;
+      cin>> x;
+      cin>> y;
     }else{
-      cout<< "Congratulations!"<< endl;
+      cout<< "Congratulations! You have solved the sudoku!"<< endl;
       break;
     }
+
   }
+     
+      
+  
+  
 }
 
 
