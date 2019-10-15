@@ -1,0 +1,54 @@
+#include <iostream>
+using namespace std;
+void swap(int a, int b, int temp){
+  temp = a;
+  a = b;
+  b = temp;
+}
+void rotate2DArray(int arr[3][3]){
+  cout<< "Array before rotation:" << endl;
+  for(int i= 0; i<3; i++){
+    for(int j = 0; j<3; j++){
+      cout << arr[i][j] << " ";
+    }cout<< " "<< endl;
+  }
+
+  int middleElement = arr[1][1];
+  
+
+  for(int i = 0; i <3; i++){
+    for(int j = 0; j<3; j++){
+        
+    }
+  }
+
+  cout<< "Array after rotation:" << endl;
+
+  
+  for(int i = 0; i<3; i++){
+    for(int j = 2; j>=0; j--){
+      cout<< arr[j][i] << " ";
+    }cout << " " << endl;
+  }
+  cout << " "<<endl;
+  for(int j = 0; j< 2; j++){
+    int min = 0;
+    int max = 2;
+    int temp = arr[min][j];
+    arr[min][j]= arr[max-j][min];
+    arr[max-j][min] = arr[max][max-j];
+    arr[max][max-j] = arr[j][max];
+    arr[j][max] = temp;
+    
+  }
+  for(int i = 0; i <3; i++){
+    for(int j = 0; j<3; j++){
+        cout<<arr[i][j]<<" ";
+    }cout<< " "<< endl;
+  }
+}
+
+int main() {
+  int arr[3][3] = {{1,2,3},{4,5,6},{7,8,9}};
+  rotate2DArray(arr);
+}
