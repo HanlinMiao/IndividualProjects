@@ -1,14 +1,19 @@
 #include <iostream>
 using namespace std;
-void swap(int a, int b, int temp){
-  temp = a;
-  a = b;
-  b = temp;
-}
-void rotate2DArray(int arr[3][3]){
+
+void rotate2DArray(int num){
+  int arr[num][num];
+  int count = 1;
+  for(int i = 0; i<num; i++){
+    for(int j = 0; j<num; j++){
+      arr[i][j] = count;
+      count++;
+    }
+  }
+
   cout<< "Array before rotation:" << endl;
-  for(int i= 0; i<3; i++){
-    for(int j = 0; j<3; j++){
+  for(int i= 0; i<num; i++){
+    for(int j = 0; j<num; j++){
       cout << arr[i][j] << " ";
     }cout<< " "<< endl;
   }
@@ -16,39 +21,42 @@ void rotate2DArray(int arr[3][3]){
   int middleElement = arr[1][1];
   
 
-  for(int i = 0; i <3; i++){
-    for(int j = 0; j<3; j++){
-        
-    }
-  }
+  
 
   cout<< "Array after rotation:" << endl;
-
-  
-  for(int i = 0; i<3; i++){
-    for(int j = 2; j>=0; j--){
+  for(int i = 0; i<num; i++){
+    for(int j = num-1; j>=0; j--){
       cout<< arr[j][i] << " ";
     }cout << " " << endl;
   }
   cout << " "<<endl;
-  for(int j = 0; j< 2; j++){
-    int min = 0;
-    int max = 2;
-    int temp = arr[min][j];
-    arr[min][j]= arr[max-j][min];
-    arr[max-j][min] = arr[max][max-j];
-    arr[max][max-j] = arr[j][max];
-    arr[j][max] = temp;
-    
+  int min = 0;
+  int max = num-1;
+  int shinMax = num -1;
+  for(int j = 0; j< num-1; j++){
+    if(min==num/2){
+      break;
+    }
+      int temp = arr[min][j];
+      arr[min][j]= arr[max-j][min];
+      arr[max-j][min] = arr[shinMax][max-j];
+      arr[shinMax][max-j] = arr[j][shinMax];
+      arr[j][shinMax] = temp;
+    if(j==shinMax-1){
+      shinMax--;
+      min++;
+      j=min-1;
+    }
   }
-  for(int i = 0; i <3; i++){
-    for(int j = 0; j<3; j++){
+  for(int i = 0; i <num; i++){
+    for(int j = 0; j<num; j++){
         cout<<arr[i][j]<<" ";
     }cout<< " "<< endl;
   }
 }
 
 int main() {
-  int arr[3][3] = {{1,2,3},{4,5,6},{7,8,9}};
-  rotate2DArray(arr);
+  
+  rotate2DArray(8);
+}
 }
