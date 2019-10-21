@@ -1,0 +1,29 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+void removeDuplicates(string word){
+    int count = 1;
+    for(int i = 0; i< word.size(); i++){
+        if(word[i]==word[i+1]){
+            for(int j = i+1; j < word.size()-1; j++){
+                if(word[j]==word[j+1]){
+                    count ++;
+                }else{
+                    break;
+                }
+            }
+            removeDuplicates(word.erase(i, count+1));
+           
+            i = word.size();
+        }else if(i == word.size()-1){
+            cout<< word << endl;
+        }
+    }
+}
+int main()
+{
+    removeDuplicates("acaaabbbacdddd");
+    return 0;
+}
