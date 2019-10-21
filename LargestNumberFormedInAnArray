@@ -1,0 +1,93 @@
+#include <iostream>
+#include <string>
+#include <math.h>
+
+using namespace std;
+int goToNextdigit(int num, int digit){
+  if(num <10){
+    return num;
+  }
+  int hoo = 0;
+  int exp = 0;
+  int dup = num;
+  int count = 0;
+  while(dup>=10){
+    dup = dup/10;
+    count++;
+  }
+  count = count - digit;
+  int count1 = count-1;
+  while(count>0){
+    hoo += num%10* pow(10, exp) ;
+    num = num /10;
+    count --;
+    exp++;
+  }
+  while(count1>0){
+    hoo = hoo/10;
+    count1--;
+  }
+  return hoo;
+}
+string largestNumber(int arr[7], int size){
+  int max = 0;
+  std::string part;
+  int index = 0;
+  int digit = 0;
+  int count  =size;
+  int arr1[size];
+  std::string maxNumber;
+  while(count > 0){ 
+    for(int i = 0; i< size; i++){
+      arr1[i] = arr[i];
+      while(arr1[i]>=10){
+        arr1[i] = arr1[i]/10;
+      }
+    }
+    for(int i = 0; i< size; i++){
+      cout<< arr1[i] << " ";
+    }
+    cout<< " "<< endl;
+    for(int i = 0; i< size; i++){
+      if(arr[i]==0){
+        continue;
+      }else if(arr1[i] > max){
+        max = arr1[i];
+        
+        index = i;
+      }else if(arr1[i]==max){
+        digit = 0;
+        int temp = arr1[i];
+        while(temp ==max){
+          temp = goToNextdigit(arr[i],digit);
+          max = goToNextdigit(arr[index],digit);
+          if(temp>max){
+            max = arr1[i];
+            index = i;
+            break;
+          }else if(max>temp){
+            max = arr1[index];
+            break;
+          }
+          digit++;
+        }
+      }
+    }
+    max = arr[index];
+    part = std::to_string(max);
+    maxNumber.append(part);
+    arr[index] = 0;
+    max= 0;
+    index = 0;
+    count--;
+    
+  } 
+  return maxNumber;
+}
+
+
+int main() {
+ int arr[5] = {1000009, 19, 109, 10009, 100};
+ cout<< largestNumber(arr, 5) << endl;;
+ //cout<<goToNextdigit(580, 0)<<endl;
+}
