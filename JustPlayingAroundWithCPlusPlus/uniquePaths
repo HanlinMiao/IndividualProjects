@@ -1,5 +1,50 @@
 #include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstdlib>
+#include <chrono>
+#include <limits>
+#include <cmath>
+
 using namespace std;
+void filler ()
+{
+
+  srand (time(0));
+
+  for (int i = 0; i <rand()%rand(); i++)
+    {
+      int num2 = pow(rand(), rand());
+
+    }
+
+}
+
+int RNG (){
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    filler();
+
+    auto end = std::chrono::high_resolution_clock::now();
+
+    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
+
+    srand (duration.count());
+    
+    return (rand()%2);
+
+}
+
+bool isEqual(vector<int> vec1, vector<int> vec2){
+  bool isEqual = false;
+  for(int i =0; i< vec1.size(); i++){
+    if(vec1[i]!=vec2[i]){
+      return isEqual;
+    }
+  }isEqual = true;
+  return isEqual;
+}
 int factorial(int num){
   int product  = 1;
   for(int i= num; i>0; i--){
@@ -12,10 +57,144 @@ int countAllPossiblePaths(int height, int width){
   int paths = factorial(squares)/(factorial(height-1)*factorial(squares-height+1));
   return paths;
 }
-int countAllPossiblePathsWithObstacles(int length, int width,int obstacleX, int obstacleY){
-  return 0;
+int coordinateConverter(int x, int y){
+  int num = y*10 + x;
+  return num;
+}
+int countAllPossiblePathsWithOneObstacle(int length, int width, int obstacleX, int obstacleY){
+  bool repeated = false;
+  int runTimes = countAllPossiblePaths(length, width)*10;
+  int startRT = runTimes;
+  int count = 0;
+  int squares = (length-1) + (width - 1)-1;
+  vector<int> vec;
+  vector<vector<int> > myVec;
+  while(runTimes>0){
+    int x = 0;
+    int y = 0;
+    
+    for(int i  =0; i< squares; i++){
+      int direction = RNG();
+      if(x==length-1){
+        y = y+1;
+      }else if(y==width-1){
+         x = x+1;
+      }else{
+        if(direction ==0){
+          x=x+1;
+        }else{
+          y=y+1;
+        }
+      }vec.push_back(coordinateConverter(x, y));
+    }
+
+    if(runTimes==startRT){
+      myVec.push_back(vec);
+      vec.clear();
+    }else{
+      for(auto x: myVec){
+        if(isEqual(x, vec)){
+         repeated = true;
+         break;
+        }
+      }if(!repeated){
+        myVec.push_back(vec);
+      }
+    }
+    vec.clear();
+    repeated = false;
+    runTimes--;
+  }
+
+  for(auto x: myVec){
+    bool isBlocked = false;
+    for(auto y: x){
+      if(y==coordinateConverter(obstacleX, obstacleY)){
+        isBlocked = true;
+      }
+    }if(isBlocked){
+      continue;
+    }else{
+      count++;
+    }
+  }
+ 
+  
+  
+  
+  return count;
+}
+int countAllPossiblePathsWithObstacles(int length, int width, vector<int> obstacles){
+  bool repeated = false;
+  int runTimes = countAllPossiblePaths(length, width)*10;
+  int startRT = runTimes;
+  int count = 0;
+  int squares = (length-1) + (width - 1)-1;
+  vector<int> vec;
+  vector<vector<int> > myVec;
+  while(runTimes>0){
+    int x = 0;
+    int y = 0;
+    
+    for(int i  =0; i< squares; i++){
+      int direction = RNG();
+      if(x==length-1){
+        y = y+1;
+      }else if(y==width-1){
+         x= x+1;
+      }else{
+        if(direction ==0){
+          x=x+1;
+        }else{
+          y=y+1;
+        }
+      }vec.push_back(coordinateConverter(x, y));
+    }
+
+    if(runTimes==startRT){
+      myVec.push_back(vec);
+      vec.clear();
+    }else{
+      for(auto x: myVec){
+        if(isEqual(x, vec)){
+         repeated = true;
+         break;
+        }
+      }if(!repeated){
+        myVec.push_back(vec);
+      }
+    }
+    vec.clear();
+    repeated = false;
+    runTimes--;
+  }
+  for(auto x: myVec){
+    bool isBlocked = false;
+    for(auto y: x){
+      if(find(obstacles.begin(), obstacles.end(), y)!=obstacles.end()){
+        isBlocked = true;
+      }
+    }if(isBlocked){
+      continue;
+    }else{
+      count++;
+    }
+  }
+  return count;
 }
 int main() {
-  cout << countAllPossiblePaths(5, 5) << endl;
+  cout<< "Output" << endl;
+  vector<int> obstacles;
+  obstacles.push_back(3);
+  obstacles.push_back(20);
+  
+  cout<< countAllPossiblePaths(4, 3) << endl;
+  cout<< countAllPossiblePathsWithOneObstacle(4,3, 3, 0)<< endl;
+  cout<<countAllPossiblePathsWithObstacles(4, 3, obstacles);
+  //cout << coordinateConverter(1, 2);
+  
+  
+
+  
 
 }
