@@ -1,0 +1,30 @@
+#include <iostream>
+#include <cstring>
+#include <algorithm>
+#include <vector>
+#include <cstdlib>
+#include <chrono>
+#include <cmath>
+#include <limits>
+using namespace std::chrono;
+using namespace std;
+
+string reverseString(string input, int begin, int end){
+  if(begin>=end){
+    return input;
+  }else{
+    char temp = input[end];
+    input[end] = input[begin];
+    input[begin] = temp;
+    begin++;
+    end--;
+  }
+  return reverseString(input, begin, end);
+}
+
+
+int main() {
+  string str1 = "Sleep";
+  string str3 = reverseString(str1, 0,str1.size()-1);
+  cout<<str3<<endl;
+}
