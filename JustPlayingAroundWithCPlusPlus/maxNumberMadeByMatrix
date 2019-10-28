@@ -1,0 +1,47 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <math.h>
+using namespace std;
+
+string solution(int arr[4][3], int M, int N){
+  int ordersOfMag = M+N-2;
+  int X = 0;
+  int Y = 0;
+  int num = arr[X][Y] * pow(10 , ordersOfMag);
+  cout<< num <<endl;
+  ordersOfMag--;
+  while(ordersOfMag >=0 && X<M && Y<N){
+    if(Y == N-1){
+      X++;
+      num += arr[X][Y] * pow(10 , ordersOfMag);
+    }else if(X==M-1){
+      Y++;
+      num += arr[X][Y] * pow(10 , ordersOfMag);
+    }else if(arr[X+1][Y]>=arr[X][Y+1]){
+      X++;
+      num += arr[X][Y] * pow(10 , ordersOfMag);
+    }else{
+      Y++;
+      num += arr[X][Y] * pow(10 , ordersOfMag);
+    }
+    ordersOfMag--;
+    cout<< num << endl;
+  
+  }
+  string haha = to_string(num);
+  return haha;
+}
+
+
+int main() {
+  std::cout << "Hello World!\n";
+  int arr[4][3] = {
+    {8,5,6},
+    {5,8,8},
+    {6,9,5},
+    {9,9,9}
+  };
+  cout<< solution(arr, 4, 3);
+}
