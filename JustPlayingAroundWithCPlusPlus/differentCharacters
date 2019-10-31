@@ -1,0 +1,52 @@
+
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <vector>
+using namespace std;
+int solution(string s, int k){
+  vector<char> myVec;
+  vector<char> temp;
+  vector<char> uni;
+  vector<char> uni2;
+  vector <int> length;
+  for(int i  = 0; i< s.length(); i++){
+    myVec.push_back(s[i]);
+  }
+  uni = myVec;
+  sort( uni.begin(), uni.end() );
+  uni.erase(unique(uni.begin(), uni.end()), uni.end());
+  temp = myVec;
+  if(std::distance(uni.begin(), uni.end() ) < k){
+    return -1;
+  }else if(std::distance(uni.begin(), uni.end()) == k){
+    return 0;
+  }
+  else{
+    for(int i  = 1; i<=s.length()-k; i++){
+      
+      int j = 0;
+      while(j<=myVec.size()-i){
+        cout<< i << endl;
+        temp.erase(temp.begin()+j, temp.begin()+j+i);
+        uni2 = temp;
+        sort(uni2.begin(), uni2.end());
+        uni2.erase(unique(uni2.begin(), uni2.end()), uni2.end());
+        if(std::distance(uni2.begin(), uni2.end())==k){
+          cout<< "hey" << endl;
+          length.push_back(i);
+        }
+        
+        j++;
+        temp = myVec;
+      }
+    }
+  std::sort(length.begin(), length.end());
+  }
+  return length[0];
+
+}
+int main() {
+  string s = "aabaabbeebbfbcccccddddeee";
+  cout << solution(s, 4);
+}
