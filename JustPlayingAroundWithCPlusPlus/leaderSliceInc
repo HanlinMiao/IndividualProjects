@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+vector<int> solution(int K, int M, vector<int> &A) {
+    // write your code in C++14 (g++ 6.2.0)
+    vector<int> temp;
+    vector<int> haha;
+    vector<int> leaders;
+    for(int i = 0; i<= A.size()-K; i++){
+        temp = A;
+        int count = i;
+        while(count<i+K){
+            temp[count] +=1;
+            count++;
+        }
+        haha = temp;
+        std:unique(haha.begin(), haha.end());
+        int counter = 0;
+        int leader = M+2;
+        for(int i  = 0; i< haha.size(); i++){
+            counter = std::count(temp.begin(),temp.end(), haha[i]);
+            if(counter>A.size()/2){
+                leader = haha[i];
+                break;
+            }counter = 0;
+            
+        }
+        if(leader !=M+2 && std::find(leaders.begin(), leaders.end(), leader)==leaders.end()){
+            leaders.push_back(leader);
+        }
+    }
+    sort(leaders.begin(), leaders.end());
+    for(int i  =0; i< leaders.size(); i++){
+      cout<< leaders[i] << " ";
+    }
+    
+    return leaders;
+}
+
+int main() {
+  vector<int> vec;
+  vec.push_back(9);
+  vec.push_back(9);
+  vec.push_back(9);
+  vec.push_back(10);
+  vec.push_back(8);
+  vec.push_back(10);
+  vec.push_back(10);
+  solution(3,10,vec);
+}
