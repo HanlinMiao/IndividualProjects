@@ -4,74 +4,63 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-int path (vector<int> A){
-  int size = A.size();
-  vector< vector <int> > paths;
-  vector< vector <int> > sums;
-   vector<int> sum;
-  for(int i  = 0; i<size; i++){
-      vector<int> temp;
-      for(int j = 0; j<pow(6, i); j++){
-        temp.push_back(0);
-      }
-      paths.push_back(temp);
-  }
-  for(int i  = 0; i<size; i++){
-      vector<int> temp;
-      for(int j = 0; j<pow(6, i); j++){
-        temp.push_back(0);
-      }
-      sums.push_back(temp);
-  }
-  for(int i  = 0; i<size; i++){
-      int index = 0;
-      for(int j = 0; j<pow(6, i); j++){
-        if(i==0){
-          paths[i][j] = 0;
-          sums[i][j] = A[paths[i][j]];
-        }else if(paths[i-1][index]==INT_MIN){
-          break;
-        }else{
-          paths[i][j] = paths[i-1][index] + j%6+1;
-          if(paths[i][j]>size-1){
-           sums[i][j] = INT_MIN;
-          }else{
-            sums[i][j] = A[paths[i][j]]+sums[i-1][index];
-          }
-          if(j%6+1==6){
-            index++;
-          }
-        }
-    }
-  }
-   for(int i=0; i<size; i++){
-     for(int j = 0; j<pow(6, i); j++){
-       if(paths[i][j]==size-1&&sums[i][j]!=INT_MIN){
-         sum.push_back(sums[i][j]);
-       }
-     }
-   }
 
-  int max = sum[0];
-  for(int i  = 1; i<sum.size(); i++){
-    if(max<=sum[i]){
-      max=sum[i];
+int paths(vector<int> A){
+  int size = A.size();
+  vector< vector<int> > sums;
+  vector <int> firstValue;
+  firstValue.push_back(A[0]);
+  sums.push_back(firstValue);
+  vector<vector <int> >paths;
+  vector<int> firstPos;
+  firstPos.push_back(0);
+  paths.push_back(firstPos);
+  for(int i = 1; i< A.size(); i++){
+    vector<int > temp;
+    vector<int> sum;
+    int index = 0;
+    for(int j = 1; j<=pow(6, i); j++){
+      if(paths[i-1][index]+j<size){
+        temp.push_back(paths[i-1][index]+j);
+        sum.push_back(sums[i-1][index]+A[paths[i-1][index]+j]);
+      }else{
+        index++;
+        j = 0;
+        if(index>paths[i-1].size()-1){
+          break;
+        }
+      }
+    }paths.push_back(temp);
+    sums.push_back(sum);
+  }
+ 
+  int max = INT_MIN;
+  for(int i = 0; i< sums.size(); i++){
+    for( int j = 0; j< sums[i].size(); j++){
+      if(paths[i][j]==size-1&&sums[i][j]>=max){
+        max=sums[i][j];
+      }
     }
   }
   return max;
-
 }
+
 int main() {
   vector<int> A;
-  A.push_back(-1);
-  A.push_back(-2);
-  A.push_back(-1);
-  A.push_back(-5);
-  A.push_back(-1);
-  A.push_back(-1);
+ 
+    A.push_back(1);
+    A.push_back(-2);
+    A.push_back(0);
+    A.push_back(9);
+    A.push_back(-1);
+    A.push_back(-2);
+    A.push_back(8);
+    A.push_back(5);
+    A.push_back(-4);
+    A.push_back(3);
+  
  
 
-  cout<< "Answer" << endl;
-  cout<< path(A);
+  
+  cout<< paths(A);
 }
-
