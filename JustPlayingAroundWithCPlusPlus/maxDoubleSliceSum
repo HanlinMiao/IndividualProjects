@@ -3,62 +3,199 @@
 #include <math.h>
 using namespace std;
 
-int solution(vector<int> &A) {
-    // write your code in C++14 (g++ 6.2.0)
-    
-    vector <int> sums;
-    vector <int> firIndex;
-    vector <int> secIndex;
-    int size = A.size();
-    int sum = 0;
-    bool allNega = true;
-    for(int i = 0; i< size-1; i++){
-      for(int j = i+1; j< size; j++){
-        if(A[j]>=0){
-          allNega = false;
-        }
-        int index = j-1;
-        while(index>i){
-          sum += A[index];
-          index--;
-        }
-        sums.push_back(sum);
-        sum = 0;
-        firIndex.push_back(i);
-        secIndex.push_back(j);
-      }
-      
-    }
-    
-    int combinedSum = 0;
-    for(int i = 0; i<sums.size(); i++){
-      for(int j = i+1; j<sums.size(); j++){
-        if(secIndex[i] == firIndex[j]&&combinedSum <= sums[i]+sums[j]){
-          combinedSum = sums[i]+sums[j];
-        }
-      }
-    }
-    
-    return combinedSum ;
+int maxSlice (vector<int> A){
+  int maxEnding = 0;
+  int maxSlice = 0;
+  for(int i  = 0; i<A.size(); i++){
+    cout<< A[i] << " ";
+    cout<< i << endl;
+  }cout<<endl;
+  for(int i = 0; i<A.size(); i++){
+    maxEnding = max(0, maxEnding + A[i]);
+    maxSlice = max(maxEnding, maxSlice);
+  }
+  return maxSlice;
 }
 
+int indexBegin(int sum, vector<int> b){
+  for(int i  = 0; i< 300; i++){
+    int sum1 = 0;
+    for(int j = i; j< 300; j++){
+      sum1 += b[j];
+      if(sum1 == sum){
+        cout<< b[j]<<endl;
+        return j;
+      }
+    }
+  }return 0;
+}
+
+int doubleMaxSlice(vector<int> A){
+  int sum = 0;
+  bool allNeg = true;
+  for(int i  =0; i<A.size(); i++){
+    if(A[i]>0){
+      allNeg = false;
+    }
+  }
+  if(allNeg == true){
+    return 0;
+  }
+  if(A.size()<4){
+    return 0;
+  }else if(A.size()==4){
+    return max(A[1], A[0]);
+  }else{
+    A.pop_back();
+    A.erase(A.begin());
+    int maxEnding = 0;
+    int maxSlice = 0;
+    int indexBegin = 0;
+    int indexEnd = 0;
+    int count  = 0;
+    int counter = 0;
+    vector<int> indexBegins;
+    indexBegins.push_back(0);
+    for(int i = 0; i<A.size(); i++){
+      int temp = 0;
+      maxEnding = max(0, maxEnding + A[i]);
+      if(maxEnding > maxSlice){
+        indexEnd = i;
+      }
+      maxSlice = max(maxEnding, maxSlice);
+      if(maxEnding==0){
+        indexBegins.push_back(i+1);
+      }
+      
+      if(i>=0 && i<A.size()){
+        cout<< count << endl;
+        count ++;
+        cout<< "max Ending" << maxEnding<< endl;
+        cout << "max Slice " << maxSlice << endl;
+        cout<< A[i]<< endl;
+        cout<< endl; 
+      }
+    }
+    int smallestDifference = indexEnd-indexBegins[0];
+    for(int i = 0; i< indexBegins.size(); i++){
+      if(indexBegins[i]>indexEnd){
+        continue;
+      }else if(smallestDifference >= indexEnd-indexBegins[i]){
+        indexBegin= indexBegins[i];
+      }
+    }
+    cout<< endl;
+    cout<< indexBegin << " " << indexEnd;
+    cout<< endl;
+    bool allPos = true;
+    int smallest = A[indexBegin];
+    for(int i = indexBegin+1; i<=indexEnd; i++){  
+      if(A[i]<0){
+        allPos = false;
+      }
+      if(smallest>A[i]){
+        smallest = A[i];
+      }
+    }
+    cout<< smallest <<endl;
+    
+    int maxSlice1 = 0;
+    int max1 = 0;
+    int sum1 = 0;
+    if(indexBegin-2>=0){
+    
+      for(int i = indexBegin-2; i>=0; i--){
+          maxSlice1 += A[i];
+          max1 = max(maxSlice1, max1);
+      }
+      sum1 = max1+maxSlice;
+    }
+    cout<< sum1 << endl;
+    cout<< "MAX1"<< endl;
+    cout<< max1<<endl;
+    
+    
+    int maxSlice2 = 0;
+    int max2 = 0;
+    if(indexBegin+2<A.size()){
+      for(int i = indexEnd+2; i<A.size(); i++){
+        maxSlice2 += A[i];
+        max2 = max(maxSlice2, max2);
+      }
+      sum1 = max(max2+maxSlice, sum1);
+    }
+    cout<< sum1 << endl;
+    cout<< "MAX2"<< endl;
+    cout<< max2<<endl;
+    if(allPos == false){
+      sum = maxSlice - smallest;
+      return max(sum, sum1);
+    }else{
+      if(indexEnd==A.size()-1&&indexBegin == 0){
+        sum = maxSlice -smallest;
+        return sum;
+      }else if(indexEnd==indexBegin){
+        return max(maxSlice, sum1);
+      }else{
+        sum = maxSlice - smallest;
+        return max(sum, sum1);
+      }
+    }
+    
+  }
+  cout<<endl;
+  
+  
+
+  
+
+}
 
 int main() {
   vector<int> A;
-  A.push_back(5);
-  A.push_back(17);
-  A.push_back(0);
   A.push_back(3);
+  A.push_back(2);
+  A.push_back(6);
+  A.push_back(-1);
+  A.push_back(5);
+  A.push_back(4);
+  A.push_back(2);
+  //A.push_back(4);
+  //A.push_back(1);
+  //A.push_back(4);
+  //A.push_back(-2);
+  //A.push_back(4);
+  //A.push_back(1);
+
+  
+
+  int arr[70] ={-8953, -8257, -1855, -7846, 8024, -9237, 724, -3356, 7042, -6807, -3256, -3324, -5097, -9967, -1275, -8248, 1952, -8603, -3691, -1034, 8108, -8145, -7157, 5802, -9576, 8223, 1468, -4694, 6757, 5376, -3131, 6030, -5863, 2178, 542, 6187, -3695, -2035, 5386, 255, 3697, 2767, 3333, 7802, -277, 3370, -2510, -9364, 5084, -6371, 6404, 8273, 3162, -6598, -3262, -2176, -8535, -865, 1463, -3278, -6219, -8237, 2566, -9744, -2962, -5418, 640, 4473, 8183, 2776};
+
+  int arr1[300] = {-27, -25, -6, -24, 24, -28, 2, -10, 21, -21, -10, -10, -16, -30, -4, -25, 6, -26, -11, -3, 25, -25, -22, 18, -29, 25, 4, -14, 21, 16, -10, 18, -18, 7, 2, 19, -11, -6, 16, 1, 11, 8, 10, 24, -1, 10, -8, -29, 16, -19, 20, 25, 10, -20, -10, -7, -26, -3, 4, -10, -19, -25, 8, -30, -9, -17, 2, 14, 25, 8, 30, 28, 8, -16, -1, -20, 30, -3, 15, -28, -22, -19, -15, -9, -14, -4, -5, -24, -27, -9, -25, -4, -30, 2, -26, 12, -6, 30, -14, -2, 15, -10, -9, 8, 29, 23, -5, 13, 11, -8, -16, -26, 23, -27, 1, 2, -22, 10, 25, 17, -7, -23, 29, 1, 8, 18, -7, -27, -22, 10, -9, 23, 15, 29, 10, -12, 18, -29, 1, 23, 1, -22, 0, 3, -8, 24, -10, -14, 0, -18, -11, -6, 27, -26, -18, -18, 30, 24, -19, 4, -25, -11, -10, 2, 26, 19, 2, 17, -1, 14, 17, -15, 20, 5, -1, -6, -17, 0, -23, 8, 24, 18, 7, 0, 12, -23, -27, 22, -8, 10, -5, -9, 16, -10, 15, 20, -19, 29, -27, -5, 0, 20, -20, 4, -8, 26, -23, -14, 20, -11, 27, -27, -7, -24, 4, 28, -11, 9, -14, -4, 4, -15, 12, 0, 25, -14, 28, -19, -29, 10, 14, -1, -28, 30, -22, 23, 24, -17, 22, -2, 24, 24, 17, -13, 5, 29, -11, -7, 11, -27, -15, -20, -5, -5, 7, 0, -20, -28, 2, 16, 26, 21, -12, 22, -2, -13, -25, -3, 3, -13, -19, 27, -26, 27, -6, 18, -24, 4, 16, -4, -9, 0, -19, -18, -16, -28, 25, -26, 26, -30, 10, 3, -28, 27, 14, 23, -4, -13, -19, -24};
+  vector<int> c;
+  for(int i =0; i<70; i++){
+    c.push_back(arr[i]);
+  }
+  vector<int> b;
+  for(int i =0; i<300; i++){
+    b.push_back(arr1[i]);
+  }
   vector<int> B;
-  B.push_back(3);
+  B.push_back(0);
   B.push_back(2);
-  B.push_back(6);
-  B.push_back(-1);
-  B.push_back(4);
-  B.push_back(5);
-  B.push_back(-1);
-  B.push_back(2);
-
-
-  std::cout << solution(A);
+  B.push_back(-25);
+  B.push_back(15);
+  B.push_back(16);
+  B.push_back(15);
+  B.push_back(10);
+  B.push_back(-21);
+  B.push_back(19);
+  B.push_back(0);
+  int sum = 0;
+  for(int i  = 25; i< 53; i++){
+    sum += c[i];
+  }
+  cout<< indexBegin(48354, c)<< endl;
+  cout<< "sum: "<< sum << endl;
+  std::cout << doubleMaxSlice(A);
 }
