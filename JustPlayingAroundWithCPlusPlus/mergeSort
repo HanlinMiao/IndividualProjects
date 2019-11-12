@@ -1,82 +1,74 @@
 #include <iostream>
+#include<stdlib.h> 
+#include<stdio.h> 
 #include <vector>
+#include <chrono> 
+using namespace std::chrono; 
 using namespace std;
-vector<int> mergeSort(vector<int> A, vector<int> B, vector<vector<int> > tree, int n, int index, vector<int> input){
+vector<int> mergeSort(vector<vector<int> > tree, int index){
+  cout<< index << endl;
   vector<int> C;
-  if(index == tree.size()-2){
-    int i  = 0;
-    int j  = 0;
-    while (i<A.size()&&j<B.size()){
-      if(A[i]<=B[j]){
-        C.push_back(A[i]);
+  int n  = tree.size();
+  int i  = 0;
+  int j  = 0;
+  int M= tree[index].size();
+  int N= tree[index+1].size();
+  if(index == n-2){
+    while (i<M&&j<N){
+      if(tree[index][i]<=tree[index+1][j]){
+        C.push_back(tree[index][i]);
         i++;
       }else{
-        C.push_back(B[j]);
+        C.push_back(tree[index+1][j]);
         j++;
       }
-      if(i==A.size()){
-        for(int i = j; i<B.size(); i++){
-          C.push_back(B[i]);
-        }
-      }
-      if(j==B.size()){
-        for(int j = i; j<A.size(); j++){
-          C.push_back(A[j]);
-        }
-      }
     }
-    input = C;
-    tree.push_back(C);
-    for(int i = 0; i< n; i++){
-      cout<< C[i] <<" ";
+    while (i < M){
+      C.push_back(tree[index][i]);
+      i++;
     }
+    while(j < N){
+      C.push_back(tree[index+1][j]);
+      j++;
+    }
+
     return C;
-  }else{
-    int i  = 0;
-    int j  = 0;
-    while (i<A.size()&&j<B.size()){
-      if(A[i]<=B[j]){
-        C.push_back(A[i]);
+    
+  }
+    while (i<M&&j<N){
+      if(tree[index][i]<=tree[index+1][j]){
+        C.push_back(tree[index][i]);
         i++;
       }else{
-        C.push_back(B[j]);
+        C.push_back(tree[index+1][j]);
         j++;
       }
-      if(i==A.size()){
-        for(int i = j; i<B.size(); i++){
-          C.push_back(B[i]);
-        }
-      }
-      if(j==B.size()){
-        for(int j = i; j<A.size(); j++){
-          C.push_back(A[j]);
-        }
-      }
+    }
+    while (i < M){
+      C.push_back(tree[index][i]);
+      i++;
+    }
+    while(j < N){
+      C.push_back(tree[index+1][j]);
+      j++;
     }
     tree.push_back(C);
-    mergeSort(tree[index+2], tree[index+3], tree, n, index+2, input);
-  }
-  return C;
+    return mergeSort(tree, index+2);
+    
 }
-vector< vector <int> >MergeTree;
+
+
+
 
 vector< vector<int> > partitionTree(vector<int> A){
-  if(A.size()==1){
-    MergeTree.push_back(A);
-  }else{
-    vector<int> L;
-    vector<int> R;
-    for(int i = 0; i<A.size()/2; i++){
-      L.push_back(A[i]);
-    }
-    
-    partitionTree(L);
-    for(int i = A.size()/2; i<A.size(); i++){
-      R.push_back(A[i]);
-    }
-    partitionTree(R);
+  vector< vector <int> >MergeTree;
+  for(int i = 0; i< A.size(); i++){
+    vector<int> temp;
+    temp.push_back(A[i]);
+    MergeTree.push_back(temp);
   }
- return MergeTree;
+ 
+  return MergeTree;
 }
 
 
@@ -84,23 +76,15 @@ vector< vector<int> > partitionTree(vector<int> A){
 int main() {
  
   vector<int> A;
-  A.push_back(5);
-  A.push_back(1);
-  A.push_back(62);
-  A.push_back(38);
-  A.push_back(34);
-  A.push_back(6);
-  A.push_back(8);
-  A.push_back(7);
+ for(int i = 0; i< 200; i++){
+   A.push_back(100-i);
+ }
   vector< vector<int> > tree = partitionTree(A);
-  mergeSort(tree[0], tree[1], tree, A.size(), 0, A);
-  cout<< endl;
-  for(int i  = 0; i<A.size(); i++){
-    cout<< A[i] << " ";
-  }
-  /*for(int i = 0; i< tree.size(); i++){
-    for(int j = 0; j<tree[i].size(); j++){
-      cout<< tree[i][j] << " ";
-    }cout<< endl;
-  }*/
+  auto start = high_resolution_clock::now(); 
+  
+   A = mergeSort(tree, 0);
+  auto stop = high_resolution_clock::now(); 
+  auto duration = duration_cast<microseconds>(stop - start); 
+  cout << "Time taken by function: "
+      << duration.count() << " microseconds" << endl; 
 }
