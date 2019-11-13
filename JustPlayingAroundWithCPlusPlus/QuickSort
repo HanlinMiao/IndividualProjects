@@ -1,65 +1,101 @@
 #include <iostream>
-#include <math.h>
-#include <stdlib.h>
-#include <time.h>
+#include <vector>
+#include <algorithm>
+#include<stdlib.h> 
+#include<stdio.h> 
 
 using namespace std;
-int partition(int arr[], int low, int high, int size){
-    int index = -1;
-    int j = high;
-    for(int i = 0; i < size; i++){
-            if(arr[i]>arr[j]&&i<j){
-                int num = arr[i];
-                arr[i] = arr[j];
-                arr[j] = num;
-                j = i;
-            }else if(arr[i]<arr[j]&&i>j){
-                int num = arr[i];
-                int x = j;
-                arr[i] = arr[j];
-                arr[j] = num;
-                j = i;
-                i = x;
-            }
-           
-           
-    }index = j;
-    return index;
 
-}
-void quicksort(int arr[], int low, int high, int size){
-    int index = partition(arr, low, high, size);
-    cout<< " " <<endl;
-    cout << low << " "<<high<<endl;
-    cout<< " " <<endl;
-    if(low-high == 1||abs(high-low)==0){
-        cout<< " "<<endl;
-        for(int i = 0; i < size; i++){
-        cout<<arr[i]<<" ";
+int partition(int V[], int l, int h, int size){
+  if(l==h){
+    return h;
+  }else{
+    int pivot = (l+h)/2;
+    int i = l;
+    int j = l+1;
+    while(j<=h+1){
+      if(j-1==pivot){
+        j++;
+      }else if(V[j-1]>=V[pivot]){
+        j++;
+      }else{
+        if(i==pivot){
+          i++;
+          j++;
+        }else{
+          swap(V[j-1], V[i]);
+          i++;
+          j++;
         }
-    }else if(high-low == 1){
-        quicksort(arr, index, high, size);
-    }
-    else{
-        cout<< " " <<endl;
-        for(int i = 0; i < size; i++){
-        cout<<arr[i]<<" ";
-        }cout<< " " <<endl;
-       
-        quicksort(arr, low, index-1, size);
-        quicksort(arr, index+1, high, size);
-    }
+      }
+  }swap(V[i], V[pivot]);
+  pivot = i;
+  for(int i = 0; i< size ; i++){
+    cout<< V[i] << " ";
+  }cout<< endl;
+  return pivot;
+  }
 }
 
+void quickSort(int V[], int l, int h, int size){
+  if(l<=h){
+    int pivot = partition(V, l, h, size);
+    quickSort(V, l, pivot-1, size);
+    quickSort(V, pivot +1, h, size);
+  }
+}
 
-int main()
-{
-    srand(time(NULL));
-    int arr[20];
-    for(int i = 0; i< 20; i++){
-        arr[i]= rand()%10;
-        cout<< arr[i] << " ";
-    }
-    quicksort(arr, 0, 19, 20);
-    return 0;
+int partitionVector(vector<int> V, int l, int h){
+  if(l==h || l>h){
+    return h;
+  }else{
+    int pivot = (l+h)/2;
+    int i = l;
+    int j = l+1;
+    while(j<=h+1){
+      if(j-1==pivot){
+        j++;
+      }else if(V[j-1]>=V[pivot]){
+        j++;
+      }else{
+        if(i==pivot){
+          i++;
+          j++;
+        }else{
+          swap(V[j-1], V[i]);
+          i++;
+          j++;
+        }
+      }
+  }swap(V[i], V[pivot]);
+  pivot = i;
+  for(int i = 0; i< V.size() ; i++){
+    cout<< V[i] << " ";
+  }cout<< endl;
+  return pivot;
+  }
+}
+void quickSortVector(vector<int> V, int l, int h){
+  if(l<=h){
+    int pivot = partitionVector(V, l, h);
+    cout<< pivot << endl;
+    quickSortVector(V, l, pivot-1);
+    quickSortVector(V, pivot +1, h);
+  }
+}
+int main() {
+  int arr[9] = {5, 87, 90, 35, 346, 89, 6, 92, 67};
+  vector <int> A;
+  A.push_back(3);
+  A.push_back(7);
+  A.push_back(8);
+  A.push_back(5);
+  A.push_back(2);
+  A.push_back(1);
+  A.push_back(9);
+  A.push_back(5);
+  A.push_back(4);
+  //quickSort(arr, 0, 8, 9);
+  quickSortVector(A, 0, 8);
+  
 }
