@@ -1,0 +1,25 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+void insertionSort(int arr[], int size){
+  for(int i  = 0; i< size-1; i++){
+    int j = i+1;
+    int sub = arr[j];
+    while(j>0){
+      if(sub <=arr[j-1]){
+        swap(arr[j], arr[j-1]);
+        sub = arr[j-1];
+      }
+      j--;
+    }
+  }
+  for(int i = 0; i< size; i++){
+    cout<< arr[i]<< " ";
+  }
+}
+
+int main() {
+  int arr[9] = {5, 6, 78, 90, 2145, 2300, 5678, 45, 69};
+  insertionSort(arr, 9);
+}
