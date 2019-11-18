@@ -1,0 +1,183 @@
+#include <iostream>
+#include <math.h>
+
+using namespace std;
+
+class node{
+  public:
+    int value;
+    int height;
+    node* left;
+    node* right;
+    node(){
+      value = 0;
+      height = 0;
+      left = NULL;
+      right = NULL;
+    }
+};
+
+class Tree{
+  public:
+    node* root;
+
+  Tree(){
+    root = NULL;
+  }
+  node* search(int value){
+    if(root==NULL){
+      cout<< "There is nothing in the tree" <<endl;
+    }else{
+      node*leaf = root;
+      while(leaf->left!=NULL||leaf->right!=NULL){
+        if(leaf->value==value){
+          cout<< "Found it" << endl;
+          return leaf;
+        }else if(leaf->value <value){
+          if(leaf->right!=NULL){
+            leaf = leaf->right;
+          }else{
+            cout<< "no Such value on the right"<< endl;
+            break;
+          }
+        }else if(leaf->value >value){
+          if(leaf->left!=NULL){
+            leaf = leaf->left;
+          }else{
+            cout<< "no Such value on the left"<< endl;
+            break;
+          }
+        }else if(leaf==NULL){
+          cout<<"No Such Value"<<endl;
+          break;
+        }
+      }if(leaf->value==value){
+          cout<< "Found it" << endl;
+          return leaf;
+      }else{
+        cout<<"No Such Value"<<endl;
+      }
+    }
+    return NULL;
+  }
+  void insert(int value){
+    if(root==NULL){
+      root = new node;
+      root->value = value;
+      root->height = 0;
+      return;
+    }else{
+      node* pointer;
+      pointer = root;
+      
+      while(pointer->left!=NULL || pointer->right!=NULL){
+        if(pointer->value < value){
+          if(pointer->right==NULL){
+            pointer->right = new node;
+            pointer->right->value = value;
+            updateHeight(root);
+            if(ifBalanced(root)==false){
+              cout<< " Not Balanced"<< endl;
+            }
+            return;
+          }else{
+            pointer = pointer->right;
+          }
+        }else if(pointer->value >value){
+          if(pointer->left==NULL){
+            pointer->left = new node;
+            pointer->left->value = value;
+            updateHeight(root);
+            if(ifBalanced(root)==false){
+              cout<< "Not Balanced"<< endl;
+            }
+            return;
+          }else{
+            pointer = pointer->left;
+          }
+        }
+      }
+      if(value>pointer->value){
+        pointer->right = new node;
+        pointer->right->value = value;
+        updateHeight(root);
+        if(ifBalanced(root)==false){
+            cout<< " Not Balanced"<< endl;
+        }
+        return;
+      }else{
+        pointer->left = new node;
+        pointer->left->value = value;
+        updateHeight(root);
+        if(ifBalanced(root)==false){
+           cout<< "Not Balanced"<< endl;
+        }
+        return;
+      }
+    }
+  }
+  
+  void inOrder(node* pointer){
+    if(root==NULL){
+      cout << "nothing to print "<< endl;
+    }else{
+      if(pointer==NULL){
+        return;
+      }else{
+        inOrder(pointer->left);
+        cout<< pointer->value << " ";
+        inOrder(pointer->right);
+      }
+    }
+  }
+  
+  int updateHeight(node* root){
+    if(root==NULL){
+      return -1;
+    }else{
+      root->height = max(updateHeight(root->left), updateHeight(root->right))+1;
+      return root->height;
+    }
+  }
+  
+  bool ifBalanced(node *root){
+    if(root==NULL){
+      cout<<"Insert Something First"<<endl;
+    }else{
+     if(root->left!=NULL&&root->right!=NULL){
+      int difference = abs(root->left->height-root->right->height);
+      if(difference > 1){
+        return false;
+      }
+    }else if(root->left==NULL){
+        int difference = abs(-1-root->right->height);
+        if(difference > 1){
+          return false;
+        }
+    }else if(root->right==NULL){
+        int difference = abs(-1-root->left->height);
+        if(difference > 1){
+          return false;
+        } 
+    }else{
+        return true;
+      }
+    }
+    return true;
+  }
+};
+  
+int main(){
+  Tree* myHeap = new Tree();
+  myHeap->insert(89);
+  myHeap->insert(19);
+  myHeap->insert(20);
+  //myHeap->insert(4);
+  //myHeap->insert(23);
+  //myHeap->insert(5);
+  node* search = myHeap->search(89);
+  myHeap->inOrder(myHeap->root);
+  cout<< search->height << endl;
+  return 0;
+}
+
