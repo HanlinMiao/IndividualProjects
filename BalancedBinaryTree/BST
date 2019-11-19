@@ -77,8 +77,69 @@ class Tree{
             pointer->right->value = value;
             updateHeight(root);
             if(ifBalanced(root)==false){
-              cout<< " Not Balanced"<< endl;
-            }
+              node * detector = root;
+              node * pursuer = root;
+              node * previous = root;
+              while(ifBalanced(detector)== false){
+                int drh;
+                int dlh;
+                if(detector->left==NULL){
+                  dlh = -1;
+                }else{
+                  dlh= detector->left->height;
+                }
+                if(detector->right==NULL){
+                  drh = -1;
+                }else{
+                  dlh= detector->right->height;
+                }
+                if(drh>dlh){
+                  previous = pursuer;
+                  pursuer=detector;
+                  detector = detector->right;
+                }else{
+                  previous = pursuer;
+                  pursuer=detector;
+                  detector = detector->left;
+                }
+              }int pr, pl, dr, dl;
+              if(pursuer->right==NULL){
+                pr=-1;
+              }else{
+                pr = pursuer->right->height;
+              }
+              if(pursuer->left==NULL){
+                pl=-1;
+              }else{
+                pl= pursuer->left->height;
+              }
+              if(detector->right==NULL){
+                dr=-1;
+              }else{
+                dr = detector->right->height;
+              }
+              if(detector->left==NULL){
+                dl=-1;
+              }else{
+                dl= detector->left->height;
+              }
+              if(pl>pr){
+                if(dr!=-1&&detector->right->value==value){
+                  rightRotation(detector, pursuer);
+                  leftRotation(pursuer, previous);
+                }else{
+                  leftRotation(pursuer, previous);
+                }
+              }else{
+                if(dl!=-1&&detector->left->value==value){
+                  leftRotation(detector, pursuer);
+                  rightRotation(pursuer, previous);
+                }else{
+                  rightRotation(pursuer, previous);
+                }
+              }
+            
+          }
             return;
           }else{
             pointer = pointer->right;
@@ -102,7 +163,72 @@ class Tree{
         pointer->right->value = value;
         updateHeight(root);
         if(ifBalanced(root)==false){
-            cout<< " Not Balanced"<< endl;
+            node * detector = root;
+            node * pursuer = root;
+            node * previous = root;
+              while(ifBalanced(detector)== false){
+                int drh;
+                int dlh;
+                if(detector->left==NULL){
+                  dlh = -1;
+                }else{
+                  dlh= detector->left->height;
+                }
+                if(detector->right==NULL){
+                  drh = -1;
+                }else{
+                  drh= detector->right->height;
+                }
+                if(drh>dlh){
+                  previous = pursuer;
+                  pursuer=detector;
+                  detector = detector->right;
+                  
+                }else{
+                  previous = pursuer;
+                  pursuer=detector;
+                  detector = detector->left;
+                  
+                }
+              }
+              int pr, pl, dr, dl;
+              if(pursuer->right==NULL){
+                pr=-1;
+              }else{
+                pr = pursuer->right->height;
+              }
+              if(pursuer->left==NULL){
+                pl=-1;
+              }else{
+                pl= pursuer->left->height;
+              }
+              if(detector->right==NULL){
+                dr=-1;
+              }else{
+                dr = detector->right->height;
+              }
+              if(detector->left==NULL){
+                dl=-1;
+              }else{
+                dl= detector->left->height;
+              }
+              if(pl>pr){
+                if(dr!=-1&&detector->right->value==value){
+                  rightRotation(detector, pursuer);
+                  leftRotation(pursuer, previous);
+                }else{
+                  leftRotation(pursuer, previous);
+                }
+              }else{
+                if(dl!=-1&&detector->left->value==value){
+                  leftRotation(detector, pursuer);
+                  rightRotation(pursuer, previous);
+                }else{
+                  rightRotation(pursuer, previous);
+                }
+              }
+            
+          
         }
         return;
       }else{
@@ -117,6 +243,9 @@ class Tree{
     }
   }
   
+
+
+
   void inOrder(node* pointer){
     if(root==NULL){
       cout << "nothing to print "<< endl;
@@ -131,6 +260,10 @@ class Tree{
     }
   }
   
+
+
+
+
   int updateHeight(node* root){
     if(root==NULL){
       return -1;
@@ -140,22 +273,22 @@ class Tree{
     }
   }
   
-  bool ifBalanced(node *root){
+  bool ifBalanced(node *pointer){
     if(root==NULL){
       cout<<"Insert Something First"<<endl;
     }else{
-     if(root->left!=NULL&&root->right!=NULL){
-      int difference = abs(root->left->height-root->right->height);
+     if(pointer->left!=NULL&&pointer->right!=NULL){
+      int difference = abs(pointer->left->height-pointer->right->height);
       if(difference > 1){
         return false;
       }
-    }else if(root->left==NULL){
-        int difference = abs(-1-root->right->height);
+    }else if(pointer->left==NULL){
+        int difference = abs(-1-pointer->right->height);
         if(difference > 1){
           return false;
         }
-    }else if(root->right==NULL){
-        int difference = abs(-1-root->left->height);
+    }else if(pointer->right==NULL){
+        int difference = abs(-1-pointer->left->height);
         if(difference > 1){
           return false;
         } 
@@ -165,19 +298,71 @@ class Tree{
     }
     return true;
   }
+
+
+     
+
+  
+
+
+
+
+  void rightRotation(node *begin, node* previous){
+      node* end = begin->right;
+      begin->right = end->left;
+      end->left = begin;
+       if(begin==previous){
+        root=end;
+        }else{
+        if(previous->left->value == begin->value){
+          previous->left = end;
+        }else{
+          previous->right = end;
+        }
+      }
+    
+    updateHeight(root);
+  }
+  void leftRotation(node *begin, node* previous){
+    
+      node *end = begin->left;
+      begin->left= end->right;
+      end->right = begin;
+      if(begin==previous){
+        root=end;
+      }else{
+        if(previous->left->value == begin->value){
+          previous->left = end;
+        }else{
+          previous->right = end;
+        }
+      }
+      
+      updateHeight(root);
+      
+  }
+
 };
+node* treeBalance(Tree* myTree, node *pointer){
+   
+  
+}
   
 int main(){
   Tree* myHeap = new Tree();
   myHeap->insert(89);
   myHeap->insert(19);
   myHeap->insert(20);
-  //myHeap->insert(4);
-  //myHeap->insert(23);
-  //myHeap->insert(5);
-  node* search = myHeap->search(89);
+  myHeap->insert(4);
+  myHeap->insert(23);
+  myHeap->insert(5);
+  //myHeap->insert(6);
+  //myHeap->insert(7);
+  //node* search = myHeap->search(7);
   myHeap->inOrder(myHeap->root);
-  cout<< search->height << endl;
+  cout<< endl;
+  cout<< "Root Value " << myHeap->root->value << endl;
+  //cout<< search->height << endl;
+  cout<< treeBalance(myHeap, myHeap->root)->value<<endl;
   return 0;
 }
-
