@@ -1,6 +1,6 @@
 #include <iostream>
 #include <math.h>
-
+#include <vector>
 using namespace std;
 
 class node{
@@ -31,7 +31,6 @@ class Tree{
       node*leaf = root;
       while(leaf->left!=NULL||leaf->right!=NULL){
         if(leaf->value==value){
-          cout<< "Found it" << endl;
           return leaf;
         }else if(leaf->value <value){
           if(leaf->right!=NULL){
@@ -52,7 +51,6 @@ class Tree{
           break;
         }
       }if(leaf->value==value){
-          cout<< "Found it" << endl;
           return leaf;
       }else{
         cout<<"No Such Value"<<endl;
@@ -89,32 +87,26 @@ class Tree{
 
         //cases where first ends up in a node different from root;
         while(ifBalanced(first)==false){
-            node * detector = root;
-            node * pursuer = root;
-            node * previous = root;
-            while(pursuer!=first||detector==pursuer){
-                int drh;
-                int dlh;
-                if(detector->left==NULL){
-                  dlh = -1;
-                }else{
-                  dlh= detector->left->height;
-                }
-                if(detector->right==NULL){
-                  drh = -1;
-                }else{
-                  drh= detector->right->height;
-                }
-                if(drh>dlh){
-                  previous = pursuer;
-                  pursuer=detector;
-                  detector = detector->right;
-                }else{
-                  previous = pursuer;
-                  pursuer=detector;
-                  detector = detector->left;
-                }
-              }
+            node* pursuer = first;
+            node* previous = searchParent(pursuer, pursuer->value);
+            node* detector;
+            int drh;
+            int dlh;
+            if(pursuer->left==NULL){
+                dlh = -1;
+            }else{
+                dlh= pursuer->left->height;
+            }
+            if(pursuer->right==NULL){
+                drh = -1;
+            }else{
+                drh= pursuer->right->height;
+            }
+            if(drh>dlh){
+              detector = pursuer->right;
+            }else{
+              detector = pursuer->left;
+            }
               
               int temp = root->value;
               int pr, pl, dr, dl;
@@ -147,7 +139,7 @@ class Tree{
                   leftRotation(pursuer, previous);
                 }
               }else{
-                if(dl<dr){
+                if(dl>dr){
                   leftRotation(detector, pursuer);
                   rightRotation(pursuer, previous);
                 }else{
@@ -182,33 +174,27 @@ class Tree{
 
         //cases where first ends up in a node different from root;
         while(ifBalanced(first)==false){
-            node * detector = root;
-            node * pursuer = root;
-            node * previous = root;
-            while(pursuer!=first||detector==pursuer){
-                int drh;
-                int dlh;
-                if(detector->left==NULL){
-                  dlh = -1;
-                }else{
-                  dlh= detector->left->height;
-                }
-                if(detector->right==NULL){
-                  drh = -1;
-                }else{
-                  drh= detector->right->height;
-                }
-                if(drh>dlh){
-                  previous = pursuer;
-                  pursuer=detector;
-                  detector = detector->right;
-                }else{
-                  previous = pursuer;
-                  pursuer=detector;
-                  detector = detector->left;
-                }
-              }
-             
+            node* pursuer = first;
+            node* previous = searchParent(pursuer, pursuer->value);
+            node* detector;
+            int drh;
+            int dlh;
+            if(pursuer->left==NULL){
+                dlh = -1;
+            }else{
+                dlh= pursuer->left->height;
+            }
+            if(pursuer->right==NULL){
+                drh = -1;
+            }else{
+                drh= pursuer->right->height;
+            }
+            if(drh>dlh){
+              detector = pursuer->right;
+            }else{
+              detector = pursuer->left;
+            }
+            
               int temp = root->value;
               int pr, pl, dr, dl;
               if(pursuer->right==NULL){
@@ -240,7 +226,7 @@ class Tree{
                   leftRotation(pursuer, previous);
                 }
               }else{
-                if(dl<dr){
+                if(dl>dr){
                   leftRotation(detector, pursuer);
                   rightRotation(pursuer, previous);
                 }else{
@@ -277,32 +263,26 @@ class Tree{
 
         //cases where first ends up in a node different from root;
         while(ifBalanced(first)==false){
-            node * detector = root;
-            node * pursuer = root;
-            node * previous = root;
-            while(pursuer!=first||detector==pursuer){
-                int drh;
-                int dlh;
-                if(detector->left==NULL){
-                  dlh = -1;
-                }else{
-                  dlh= detector->left->height;
-                }
-                if(detector->right==NULL){
-                  drh = -1;
-                }else{
-                  drh= detector->right->height;
-                }
-                if(drh>dlh){
-                  previous = pursuer;
-                  pursuer=detector;
-                  detector = detector->right;
-                }else{
-                  previous = pursuer;
-                  pursuer=detector;
-                  detector = detector->left;
-                }
-              }
+            node* pursuer = first;
+            node* previous = searchParent(pursuer, pursuer->value);
+            node* detector;
+            int drh;
+            int dlh;
+            if(pursuer->left==NULL){
+                dlh = -1;
+            }else{
+                dlh= pursuer->left->height;
+            }
+            if(pursuer->right==NULL){
+                drh = -1;
+            }else{
+                drh= pursuer->right->height;
+            }
+            if(drh>dlh){
+              detector = pursuer->right;
+            }else{
+              detector = pursuer->left;
+            }
               
               int temp = root->value;
               int pr, pl, dr, dl;
@@ -335,7 +315,7 @@ class Tree{
                   leftRotation(pursuer, previous);
                 }
               }else{
-                if(dl<dr){
+                if(dl>dr){
                   leftRotation(detector, pursuer);
                   rightRotation(pursuer, previous);
                 }else{
@@ -353,6 +333,7 @@ class Tree{
         pointer->left = new node;
         pointer->left->value = value;
         updateHeight(root);
+        
         bool Balanced = true;
         node *first = searchParent(pointer->left, value);
         
@@ -363,36 +344,33 @@ class Tree{
           }first = searchParent(first, first->value);
         }
 
-
+        
         //cases where first ends up in a node different from root;
         while(ifBalanced(first)==false){
-            node * detector = root;
-            node * pursuer = root;
-            node * previous = root;
-            while(pursuer!=first||detector==pursuer){
-                int drh;
-                int dlh;
-                if(detector->left==NULL){
-                  dlh = -1;
-                }else{
-                  dlh= detector->left->height;
-                }
-                if(detector->right==NULL){
-                  drh = -1;
-                }else{
-                  drh= detector->right->height;
-                }
-                if(drh>dlh){
-                  previous = pursuer;
-                  pursuer=detector;
-                  detector = detector->right;
-                }else{
-                  previous = pursuer;
-                  pursuer=detector;
-                  detector = detector->left;
-                }
-              }
-              
+            
+            node* pursuer = first;
+            node* previous = searchParent(pursuer, pursuer->value);
+            node* detector;
+            int drh;
+            int dlh;
+            if(pursuer->left==NULL){
+                dlh = -1;
+            }else{
+                dlh= pursuer->left->height;
+            }
+            if(pursuer->right==NULL){
+                drh = -1;
+            }else{
+                drh= pursuer->right->height;
+            }
+            if(drh>dlh){
+              detector = pursuer->right;
+            }else{
+              detector = pursuer->left;
+            }
+            
+
+             
               int temp = root->value;
               int pr, pl, dr, dl;
               if(pursuer->right==NULL){
@@ -424,7 +402,7 @@ class Tree{
                   leftRotation(pursuer, previous);
                 }
               }else{
-                if(dl<dr){
+                if(dl>dr){
                   leftRotation(detector, pursuer);
                   rightRotation(pursuer, previous);
                 }else{
@@ -436,6 +414,7 @@ class Tree{
             }else{
               first = searchParent(first, first->value);
             }
+            
         }
         return;
       }
@@ -452,6 +431,7 @@ class Tree{
       if(pointer==NULL){
         return;
       }else{
+        
         inOrder(pointer->left);
         cout<< pointer->value << " ";
         inOrder(pointer->right);
@@ -510,7 +490,8 @@ class Tree{
       node* end = begin->right;
       begin->right = end->left;
       end->left = begin;
-       if(begin==previous){
+      
+      if(begin==previous){
         root=end;
       }else{
         if(previous->left->value == begin->value){
@@ -558,22 +539,60 @@ class Tree{
 
   
 int main(){
+  vector <int> testSequence;
   Tree* myHeap = new Tree();
   myHeap->insert(89);
-  myHeap->insert(19);
-  myHeap->insert(20);
-  myHeap->insert(4);
-  myHeap->insert(23);
-  myHeap->insert(5);
-  myHeap->insert(6);
-  myHeap->insert(7);
-  myHeap->insert(3);
-  myHeap->insert(2);
-  myHeap->insert(1);
-  node* search = myHeap->search(6);
-  myHeap->inOrder(myHeap->root);
   
-  cout<< search->height << endl;
+  myHeap->insert(19);
+  
+  myHeap->insert(20);
+
+  myHeap->insert(4);
+  
+  myHeap->insert(23);
+  
+  myHeap->insert(5);
+  
+  myHeap->insert(6);
+  
+  myHeap->insert(7);
+  
+  myHeap->insert(3);
+  
+  myHeap->insert(2);
+  
+  myHeap->insert(1);
+  
+  myHeap->insert(-50);
+  
+  myHeap->insert(-100);
+  
+  myHeap->insert(18);
+  
+  myHeap->insert(22);
+  
+  myHeap->insert(55);
+  
+  myHeap->insert(16);
+  
+  myHeap->insert(100);
+  
+  myHeap->insert(90);
+  
+  myHeap->insert(56);
+  
+  node* search;
+  node* search1 = myHeap->search(55);
+  
+  myHeap->inOrder(myHeap->root);
+  cout<<endl;
+  cout<< "Root Value " << myHeap->root->value <<endl;
+  cout<< "Root Value " << search1->value <<endl;
+  
+  cout<< "Root Value " << search1->left->value <<endl;
+  cout<< "Root Value " << search1->right->value <<endl;
+  
+  cout<< search1->height << endl;
   
   return 0;
 }
