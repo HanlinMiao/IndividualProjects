@@ -76,97 +76,23 @@ class Tree{
             pointer->right = new node;
             pointer->right->value = value;
             updateHeight(root);
-            if(ifBalanced(root)==false){
-              node * detector = root;
-              node * pursuer = root;
-              node * previous = root;
-              while(ifBalanced(detector)== false){
-                int drh;
-                int dlh;
-                if(detector->left==NULL){
-                  dlh = -1;
-                }else{
-                  dlh= detector->left->height;
-                }
-                if(detector->right==NULL){
-                  drh = -1;
-                }else{
-                  dlh= detector->right->height;
-                }
-                if(drh>dlh){
-                  previous = pursuer;
-                  pursuer=detector;
-                  detector = detector->right;
-                }else{
-                  previous = pursuer;
-                  pursuer=detector;
-                  detector = detector->left;
-                }
-              }int pr, pl, dr, dl;
-              if(pursuer->right==NULL){
-                pr=-1;
-              }else{
-                pr = pursuer->right->height;
-              }
-              if(pursuer->left==NULL){
-                pl=-1;
-              }else{
-                pl= pursuer->left->height;
-              }
-              if(detector->right==NULL){
-                dr=-1;
-              }else{
-                dr = detector->right->height;
-              }
-              if(detector->left==NULL){
-                dl=-1;
-              }else{
-                dl= detector->left->height;
-              }
-              if(pl>pr){
-                if(dr!=-1&&detector->right->value==value){
-                  rightRotation(detector, pursuer);
-                  leftRotation(pursuer, previous);
-                }else{
-                  leftRotation(pursuer, previous);
-                }
-              }else{
-                if(dl!=-1&&detector->left->value==value){
-                  leftRotation(detector, pursuer);
-                  rightRotation(pursuer, previous);
-                }else{
-                  rightRotation(pursuer, previous);
-                }
-              }
-            
-          }
-            return;
-          }else{
-            pointer = pointer->right;
-          }
-        }else if(pointer->value >value){
-          if(pointer->left==NULL){
-            pointer->left = new node;
-            pointer->left->value = value;
-            updateHeight(root);
-            if(ifBalanced(root)==false){
-              cout<< "Not Balanced"<< endl;
-            }
-            return;
-          }else{
-            pointer = pointer->left;
-          }
+            bool Balanced = true;
+        node *first = searchParent(pointer->right, value);
+        
+        while(first !=root){
+          Balanced = ifBalanced(first);
+          if(Balanced==false){
+            break;
+          }first = searchParent(first, first->value);
         }
-      }
-      if(value>pointer->value){
-        pointer->right = new node;
-        pointer->right->value = value;
-        updateHeight(root);
-        if(ifBalanced(root)==false){
+
+
+        //cases where first ends up in a node different from root;
+        while(ifBalanced(first)==false){
             node * detector = root;
             node * pursuer = root;
             node * previous = root;
-              while(ifBalanced(detector)== false){
+            while(pursuer!=first||detector==pursuer){
                 int drh;
                 int dlh;
                 if(detector->left==NULL){
@@ -183,14 +109,14 @@ class Tree{
                   previous = pursuer;
                   pursuer=detector;
                   detector = detector->right;
-                  
                 }else{
                   previous = pursuer;
                   pursuer=detector;
                   detector = detector->left;
-                  
                 }
               }
+              
+              int temp = root->value;
               int pr, pl, dr, dl;
               if(pursuer->right==NULL){
                 pr=-1;
@@ -212,31 +138,304 @@ class Tree{
               }else{
                 dl= detector->left->height;
               }
+
               if(pl>pr){
-                if(dr!=-1&&detector->right->value==value){
+                if(dr>dl){
                   rightRotation(detector, pursuer);
                   leftRotation(pursuer, previous);
                 }else{
                   leftRotation(pursuer, previous);
                 }
               }else{
-                if(dl!=-1&&detector->left->value==value){
+                if(dl<dr){
                   leftRotation(detector, pursuer);
                   rightRotation(pursuer, previous);
                 }else{
                   rightRotation(pursuer, previous);
                 }
               }
-            
-          
+            if(first->value == temp){
+              break;
+            }else{
+              first = searchParent(first, first->value);
+            }
+        }
+        return;
+        }else{
+            pointer = pointer->right;
+        }
+        }else if(pointer->value >value){
+          if(pointer->left==NULL){
+            pointer->left = new node;
+            pointer->left->value = value;
+            updateHeight(root);
+            bool Balanced = true;
+        node *first = searchParent(pointer->left, value);
+        
+        while(first !=root){
+          Balanced = ifBalanced(first);
+          if(Balanced==false){
+            break;
+          }first = searchParent(first, first->value);
+        }
+
+
+        //cases where first ends up in a node different from root;
+        while(ifBalanced(first)==false){
+            node * detector = root;
+            node * pursuer = root;
+            node * previous = root;
+            while(pursuer!=first||detector==pursuer){
+                int drh;
+                int dlh;
+                if(detector->left==NULL){
+                  dlh = -1;
+                }else{
+                  dlh= detector->left->height;
+                }
+                if(detector->right==NULL){
+                  drh = -1;
+                }else{
+                  drh= detector->right->height;
+                }
+                if(drh>dlh){
+                  previous = pursuer;
+                  pursuer=detector;
+                  detector = detector->right;
+                }else{
+                  previous = pursuer;
+                  pursuer=detector;
+                  detector = detector->left;
+                }
+              }
+             
+              int temp = root->value;
+              int pr, pl, dr, dl;
+              if(pursuer->right==NULL){
+                pr=-1;
+              }else{
+                pr = pursuer->right->height;
+              }
+              if(pursuer->left==NULL){
+                pl=-1;
+              }else{
+                pl= pursuer->left->height;
+              }
+              if(detector->right==NULL){
+                dr=-1;
+              }else{
+                dr = detector->right->height;
+              }
+              if(detector->left==NULL){
+                dl=-1;
+              }else{
+                dl= detector->left->height;
+              }
+
+              if(pl>pr){
+                if(dr>dl){
+                  rightRotation(detector, pursuer);
+                  leftRotation(pursuer, previous);
+                }else{
+                  leftRotation(pursuer, previous);
+                }
+              }else{
+                if(dl<dr){
+                  leftRotation(detector, pursuer);
+                  rightRotation(pursuer, previous);
+                }else{
+                  rightRotation(pursuer, previous);
+                }
+              }
+            if(first->value == temp){
+              break;
+            }else{
+              first = searchParent(first, first->value);
+            }
+        }
+        return;
+          }else{
+            pointer = pointer->left;
+          }
+        }
+      }
+      if(value>pointer->value){
+        pointer->right = new node;
+        pointer->right->value = value;
+        updateHeight(root);
+        //find the lowest level of unbalanced node.
+        bool Balanced = true;
+        node *first = searchParent(pointer->right, value);
+        
+        while(first !=root){
+          Balanced = ifBalanced(first);
+          if(Balanced==false){
+            break;
+          }first = searchParent(first, first->value);
+        }
+
+
+        //cases where first ends up in a node different from root;
+        while(ifBalanced(first)==false){
+            node * detector = root;
+            node * pursuer = root;
+            node * previous = root;
+            while(pursuer!=first||detector==pursuer){
+                int drh;
+                int dlh;
+                if(detector->left==NULL){
+                  dlh = -1;
+                }else{
+                  dlh= detector->left->height;
+                }
+                if(detector->right==NULL){
+                  drh = -1;
+                }else{
+                  drh= detector->right->height;
+                }
+                if(drh>dlh){
+                  previous = pursuer;
+                  pursuer=detector;
+                  detector = detector->right;
+                }else{
+                  previous = pursuer;
+                  pursuer=detector;
+                  detector = detector->left;
+                }
+              }
+              
+              int temp = root->value;
+              int pr, pl, dr, dl;
+              if(pursuer->right==NULL){
+                pr=-1;
+              }else{
+                pr = pursuer->right->height;
+              }
+              if(pursuer->left==NULL){
+                pl=-1;
+              }else{
+                pl= pursuer->left->height;
+              }
+              if(detector->right==NULL){
+                dr=-1;
+              }else{
+                dr = detector->right->height;
+              }
+              if(detector->left==NULL){
+                dl=-1;
+              }else{
+                dl= detector->left->height;
+              }
+
+              if(pl>pr){
+                if(dr>dl){
+                  rightRotation(detector, pursuer);
+                  leftRotation(pursuer, previous);
+                }else{
+                  leftRotation(pursuer, previous);
+                }
+              }else{
+                if(dl<dr){
+                  leftRotation(detector, pursuer);
+                  rightRotation(pursuer, previous);
+                }else{
+                  rightRotation(pursuer, previous);
+                }
+              }
+            if(first->value == temp){
+              break;
+            }else{
+              first = searchParent(first, first->value);
+            }
         }
         return;
       }else{
         pointer->left = new node;
         pointer->left->value = value;
         updateHeight(root);
-        if(ifBalanced(root)==false){
-           cout<< "Not Balanced"<< endl;
+        bool Balanced = true;
+        node *first = searchParent(pointer->left, value);
+        
+        while(first !=root){
+          Balanced = ifBalanced(first);
+          if(Balanced==false){
+            break;
+          }first = searchParent(first, first->value);
+        }
+
+
+        //cases where first ends up in a node different from root;
+        while(ifBalanced(first)==false){
+            node * detector = root;
+            node * pursuer = root;
+            node * previous = root;
+            while(pursuer!=first||detector==pursuer){
+                int drh;
+                int dlh;
+                if(detector->left==NULL){
+                  dlh = -1;
+                }else{
+                  dlh= detector->left->height;
+                }
+                if(detector->right==NULL){
+                  drh = -1;
+                }else{
+                  drh= detector->right->height;
+                }
+                if(drh>dlh){
+                  previous = pursuer;
+                  pursuer=detector;
+                  detector = detector->right;
+                }else{
+                  previous = pursuer;
+                  pursuer=detector;
+                  detector = detector->left;
+                }
+              }
+              
+              int temp = root->value;
+              int pr, pl, dr, dl;
+              if(pursuer->right==NULL){
+                pr=-1;
+              }else{
+                pr = pursuer->right->height;
+              }
+              if(pursuer->left==NULL){
+                pl=-1;
+              }else{
+                pl= pursuer->left->height;
+              }
+              if(detector->right==NULL){
+                dr=-1;
+              }else{
+                dr = detector->right->height;
+              }
+              if(detector->left==NULL){
+                dl=-1;
+              }else{
+                dl= detector->left->height;
+              }
+
+              if(pl>pr){
+                if(dr>dl){
+                  rightRotation(detector, pursuer);
+                  leftRotation(pursuer, previous);
+                }else{
+                  leftRotation(pursuer, previous);
+                }
+              }else{
+                if(dl<dr){
+                  leftRotation(detector, pursuer);
+                  rightRotation(pursuer, previous);
+                }else{
+                  rightRotation(pursuer, previous);
+                }
+              }
+            if(first->value == temp){
+              break;
+            }else{
+              first = searchParent(first, first->value);
+            }
         }
         return;
       }
@@ -313,7 +512,7 @@ class Tree{
       end->left = begin;
        if(begin==previous){
         root=end;
-        }else{
+      }else{
         if(previous->left->value == begin->value){
           previous->left = end;
         }else{
@@ -341,12 +540,22 @@ class Tree{
       updateHeight(root);
       
   }
-
+  node* searchParent(node* pointer, int value){
+   node* slow = root;
+   node* fast = root;
+   while(fast->value != value){
+     if(fast->value>value){
+       slow = fast;
+       fast = fast->left;
+     }else{
+       slow = fast;
+       fast=fast->right;
+     }
+   }
+    return slow;
+  }
 };
-node* treeBalance(Tree* myTree, node *pointer){
-   
-  
-}
+
   
 int main(){
   Tree* myHeap = new Tree();
@@ -356,13 +565,15 @@ int main(){
   myHeap->insert(4);
   myHeap->insert(23);
   myHeap->insert(5);
-  //myHeap->insert(6);
-  //myHeap->insert(7);
-  //node* search = myHeap->search(7);
+  myHeap->insert(6);
+  myHeap->insert(7);
+  myHeap->insert(3);
+  myHeap->insert(2);
+  myHeap->insert(1);
+  node* search = myHeap->search(6);
   myHeap->inOrder(myHeap->root);
-  cout<< endl;
-  cout<< "Root Value " << myHeap->root->value << endl;
-  //cout<< search->height << endl;
-  cout<< treeBalance(myHeap, myHeap->root)->value<<endl;
+  
+  cout<< search->height << endl;
+  
   return 0;
 }
