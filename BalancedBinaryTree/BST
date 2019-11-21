@@ -46,9 +46,7 @@ class Tree{
   }
 
   void insert(int value){
-
     if(root==NULL){
-      cout<< "HEY" << endl;
       root = new node;
       root->value = value;
       root->height = 0;
@@ -81,7 +79,6 @@ class Tree{
             break;
           }first = searchParent(first, first->value);
         }
-        //cases where first ends up in a node different from root;
         while(ifBalanced(first)==false){
             node* pursuer = first;
             node* previous = searchParent(pursuer, pursuer->value);
@@ -162,9 +159,6 @@ class Tree{
             break;
           }first = searchParent(first, first->value);
         }
-
-
-        //cases where first ends up in a node different from root;
         while(ifBalanced(first)==false){
             node* pursuer = first;
             node* previous = searchParent(pursuer, pursuer->value);
@@ -236,6 +230,52 @@ class Tree{
       }
   
        
+    }
+  }
+
+  void deleteNode(int value){
+    if(root ==NULL){
+      cout<< "Insert something to delete"<< endl;
+    }else if(search(value)==NULL){
+      cout<< value << " does not exist in the tree." << endl;
+    }else{
+      node* deletion = search(value);
+      node* parent = searchParent(deletion, value);
+      
+      if(deletion->right == NULL && deletion->left==NULL){
+        // Deleted Node is a leaf.
+        if(parent->right!= NULL&&parent->right->value==value){
+          delete deletion;
+          parent->right =NULL;
+          updateHeight(root);
+        }else{
+          delete deletion;
+          parent->left= NULL;
+          updateHeight(root);
+        }
+      }else if(deletion->right!=NULL && deletion->left!=NULL){
+        //Deleted Node is a parent of both children.
+      }else{
+        //Deleted Node is a parent of one child.
+         if(parent->right!= NULL&&parent->right->value==value){
+           if(deletion->right==NULL){
+             parent->right = deletion->left;
+           }else{
+             parent->right = deletion->right;
+           }
+          delete deletion;
+          updateHeight(root);
+        }else{
+          if(deletion->right==NULL){
+             parent->left = deletion->left;
+           }else{
+             parent->left = deletion->right;
+           }
+          delete deletion;
+          updateHeight(root);
+        }
+      }
+      
     }
   }
   
@@ -394,7 +434,10 @@ int main(){
   myHeap->insert(-200);
   myHeap->insert(-400);
   myHeap->insert(-10000);
-
+  //myHeap->deleteNode(-10000);
+  //myHeap->deleteNode(-400);
+  //myHeap->deleteNode(100);
+  
   myHeap->inOrder(myHeap->root);
   
   node* search;
