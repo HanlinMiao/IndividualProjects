@@ -255,6 +255,17 @@ class Tree{
         }
       }else if(deletion->right!=NULL && deletion->left!=NULL){
         //Deleted Node is a parent of both children.
+        node * probe = deletion->right;
+        while(probe->left != NULL){
+          probe = probe->left;
+        }
+        node*parent = searchParent(probe, probe->value);
+        int temp = probe->value;
+        probe->value = deletion->value;
+        deletion->value = temp;
+        delete probe;
+        parent->left = NULL;
+        updateHeight(root);
       }else{
         //Deleted Node is a parent of one child.
          if(parent->right!= NULL&&parent->right->value==value){
@@ -434,6 +445,8 @@ int main(){
   myHeap->insert(-200);
   myHeap->insert(-400);
   myHeap->insert(-10000);
+  myHeap->deleteNode(5);
+  myHeap->deleteNode(-3);
   //myHeap->deleteNode(-10000);
   //myHeap->deleteNode(-400);
   //myHeap->deleteNode(100);
