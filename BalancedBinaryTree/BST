@@ -52,7 +52,7 @@ class Tree{
       root->height = 0;
       return;
     }else if(search(value)!=NULL){
-      cout<< "You can not insert a repeated value" << endl;
+      cout<< "You cannot insert a repeated value" << endl;
     }else{
       node* fast;
       node* pointer;
@@ -68,6 +68,7 @@ class Tree{
         }
       }
       if(pointer->value > value){
+        
         pointer->left = new node;
         pointer->left->value = value;
         updateHeight(root);
@@ -81,7 +82,13 @@ class Tree{
         }
         while(ifBalanced(first)==false){
             node* pursuer = first;
-            node* previous = searchParent(pursuer, pursuer->value);
+            node* previous;
+            if(pursuer==root){
+              
+              previous = root;
+            }else{
+              previous = searchParent(pursuer, pursuer->value);
+            }
             node* detector;
             int drh;
             int dlh;
@@ -123,7 +130,7 @@ class Tree{
               }else{
                 dl= detector->left->height;
               }
-
+              
               if(pl>pr){
                 if(dr>dl){
                   rightRotation(detector, pursuer);
@@ -134,11 +141,13 @@ class Tree{
               }else{
                 if(dl>dr){
                   leftRotation(detector, pursuer);
+                
                   rightRotation(pursuer, previous);
                 }else{
                   rightRotation(pursuer, previous);
                 }
               }
+              
             if(first->value == temp){
               break;
             }else{
@@ -757,13 +766,14 @@ class Tree{
       node *end = begin->left;
       begin->left= end->right;
       end->right = begin;
+      
       if(begin==previous){
         root=end;
       }else{
-        if(previous->left->value == begin->value){
-          previous->left = end;
-        }else{
+        if(previous->right->value == begin->value){
           previous->right = end;
+        }else{
+          previous->left = end;
         }
       }
       
@@ -788,68 +798,43 @@ class Tree{
 
   
 int main(){
-  vector <int> testSequence;
-  Tree* myHeap = new Tree();
+  Tree* bigTree = new Tree();
+  while(1){
+    cout<< "Enter 1 to insert something in the Tree." <<endl;
+    cout<< "Enter 2 to delete something in the Tree." <<endl;
+    cout<< "Enter 3 to search something in the Tree." <<endl;
+    cout<< "Enter 4 to see what is inside the Tree." <<endl;
+    cout<< "Enter 5 to terminate." <<endl;
+    int userInput;
+    cin>> userInput;
+    switch(userInput){
+      case 1: cout<< "What do you want to insert in the Tree? (numbers only)"<<endl;
+      int num;
+      cin >>num;
+      bigTree->insert(num);
+      cout<<endl;
+      break;
+      case 2: cout<< "What do you want to delete in the Tree? (numbers only)"<<endl;
+      int num1;
+      cin >>num1;
+      bigTree->deleteNode(num1);
+      cout<<endl;
+      break;
+      case 3: cout<< "What do you want to search in the Tree? (numbers only)"<<endl;
+      int num2;
+      cin>>num2;
+      bigTree->search(num2);
+      cout<<endl;
+      break;
+      case 4: bigTree->inOrder(bigTree->root);
+      cout<<endl;
+      break;
+      case 5: return 0;
+    }
+    
+  }
 
-  myHeap->insert(89);
-  myHeap->insert(19);
-  myHeap->insert(20);
-  myHeap->insert(4);
-  myHeap->insert(23);
-  myHeap->insert(5);
-  myHeap->insert(6);
-  myHeap->insert(7);
-  myHeap->insert(3);
-  myHeap->insert(2);
-  myHeap->insert(1);
-  myHeap->insert(-50);
-  myHeap->insert(-100);
-  myHeap->insert(18);
-  myHeap->insert(22);
-  myHeap->insert(55);
-  myHeap->insert(16);
-  myHeap->insert(100);
-  myHeap->insert(90);
-  //myHeap->insert(56);
-  //myHeap->insert(17);
-  //myHeap->insert(8);
-  //myHeap->insert(10);
-  //myHeap->insert(12);
-  //myHeap->insert(11);
-  //myHeap->insert(9);
-  //myHeap->insert(-1);
-  //myHeap->insert(-2);
-  //myHeap->insert(-3);
-  //myHeap->insert(-5);
-  //myHeap->insert(-6);
-  //myHeap->insert(-200);
-  //myHeap->insert(-400);
-  //myHeap->insert(-10000);
-  myHeap->deleteNode(1);
-  myHeap->deleteNode(2);
-  myHeap->deleteNode(3);
-  myHeap->deleteNode(4);
-  //myHeap->deleteNode(18);
-  //myHeap->deleteNode(-10000);
-  //myHeap->deleteNode(-200);
-  //myHeap->deleteNode(100);
   
-  myHeap->inOrder(myHeap->root);
-  
-  node* search;
-  node* search1 = myHeap->search(20);
-  
-  
-  cout<<endl;
-  cout<< "Root Value " << myHeap->root->value <<endl;
-  cout<< "Root Value " << search1->value <<endl;
-
-  cout<< "Root Value " << search1->right->value <<endl;
-  
-  cout<< "Root Value " << search1->left->value <<endl;
-  cout<< "Root Value " << search1->right->value <<endl;
-  
-  cout<< search1->height << endl;
   
   return 0;
 }
