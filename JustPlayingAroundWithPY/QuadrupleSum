@@ -1,0 +1,55 @@
+num = [10, 2, 3, 4, 5, 9, 7, 8];
+def countingSort(arr):
+  max  = arr[0];
+  for x in arr:
+    if(max<=x):
+        max = x;
+  thisDict = {};
+  x = 0;
+  while x <= max:
+    thisDict[x] = 0;
+    x = x+1;
+  for x in arr:
+      thisDict[x] = thisDict[x]+1;
+  num2 = [];
+  for x in thisDict.keys():
+    while(thisDict[x]!=0):
+      num2.append(x);
+      thisDict[x] = thisDict[x]-1;
+  return num2;
+
+num = countingSort(num);
+sum = 23;
+sum2 = {};
+sum3 = [];
+for i in range(0, len(num)-1):
+  for j in range(i+1, len(num)):
+    if(i!=j):
+      sum1 = num[i] + num[j];
+      if(sum1 not in sum2):
+        sum2[sum1] = [(num[i], num[j])];
+        sum3.append(sum1);
+      else:
+        sum2[sum1].append((num[i], num[j]));
+sum3 = countingSort(sum3);
+for x in sum2.items():
+  print(x);
+print();
+for x in sum3:
+  print(x, end=" ");
+myList = [];
+for x in sum3:
+  if(sum-x in sum2):
+    arr=[];
+    arr.append(sum2[x][0][0]);
+    arr.append(sum2[x][0][1]);
+    arr.append(sum2[sum-x][0][0]);
+    arr.append(sum2[sum-x][0][1]);
+    arr= countingSort(arr);
+    if(arr not in myList):
+      myList.append(arr);
+
+for x in myList:
+  print(x);
+
+
